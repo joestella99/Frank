@@ -57,7 +57,7 @@ class Pet:
         self.width,self.height=self.motion.width,self.motion.height
         screen_w,screen_h=self.root.winfo_screenwidth(),self.root.winfo_screenheight()
         self.x=max(0,screen_w-self.width-38)
-        self.floor=screen_h-self.height-75
+        self.floor=screen_h-self.height-48
         self.y=self.floor
         self.place()
         self.label.bind("<ButtonPress-1>",self.mouse_down)
