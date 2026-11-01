@@ -5,7 +5,7 @@ from urllib.request import Request,urlopen
 from tkinter import ttk
 from PIL import Image,ImageOps,ImageTk
 from sound import generate_bark
-from pet_motion import MotionController, FRAME_MS
+from pose_pet import PosePet, FRAME_MS
 
 BASE=Path(__file__).resolve().parent
 HOME=Path.home()/".frank"
@@ -50,8 +50,7 @@ class Pet:
         self.running=True
         self.direction=-1
         self.tick=0
-        self.sprite=self.make_sprite()
-        self.motion=MotionController(self.sprite)
+        self.motion=PosePet(BASE/'assets')
         self.current_image=ImageTk.PhotoImage(self.motion.frame())
         self.label=tk.Label(self.root,image=self.current_image,bg=COLOR,borderwidth=0,cursor="hand2")
         self.label.pack()
@@ -74,7 +73,7 @@ class Pet:
         self.menu_ui.add_command(label="Mute / unmute bark",command=self.toggle_sound)
         self.menu_ui.add_separator()
         self.menu_ui.add_command(label="Quit Frank",command=self.root.destroy)
-        self.root.after(400,self.animate)
+        self.root.after(FRAME_MS,self.animate)
         self.root.after(1000,self.poll)
         self.root.after(1200,self.sync)
         self.root.after(700,self.sync_again)
