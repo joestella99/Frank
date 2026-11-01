@@ -1,9 +1,9 @@
-"""Frank, a tiny moving Windows desktop dog. Install Pillow before running."""
-import base64,io,json,queue,random,sys,threading,tkinter as tk,webbrowser
+"""Frank, a tiny pose-animated Windows desktop dog. Install Pillow before running."""
+import json,queue,random,sys,threading,tkinter as tk,webbrowser
 from pathlib import Path
 from urllib.request import Request,urlopen
 from tkinter import ttk
-from PIL import Image,ImageOps,ImageTk
+from PIL import ImageTk
 from sound import generate_bark
 from pose_pet import PosePet, FRAME_MS
 
@@ -77,26 +77,6 @@ class Pet:
         self.root.after(1000,self.poll)
         self.root.after(1200,self.sync)
         self.root.after(700,self.sync_again)
-
-    def make_sprite(self):
-        file=BASE/"assets"/"frank.png"
-        encoded=BASE/"assets"/"frank.png.b64"
-        if file.exists():im=Image.open(file).convert("RGBA")
-        elif encoded.exists():im=Image.open(io.BytesIO(base64.b64decode(encoded.read_text().strip()))).convert("RGBA")
-        else:
-            im=Image.new("RGBA",(120,150),(0,0,0,0))
-            from PIL import ImageDraw
-            d=ImageDraw.Draw(im)
-            d.ellipse((17,42,100,143),fill="#282222")
-            d.polygon([(24,54),(14,7),(54,38)],fill="#302827")
-            d.polygon([(70,37),(101,5),(102,66)],fill="#302827")
-            d.ellipse((38,48,91,105),fill="#423634")
-            d.ellipse((50,68,57,75),fill=GOLD);d.ellipse((76,68,83,75),fill=GOLD)
-            d.ellipse((59,85,74,97),fill="black")
-        bounds=im.getbbox()
-        if bounds:im=im.crop(bounds)
-        im.thumbnail((61,79),Image.Resampling.LANCZOS)
-        return im
 
     def place(self):
         self.root.geometry("+%d+%d"%(int(self.x),int(self.y)))
