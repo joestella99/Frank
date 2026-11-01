@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Novig",
+    "provider": "ashby",
+    "slug": "novig",
+    "sports": true
+  },
+  {
+    "name": "Fanatics",
+    "provider": "greenhouse",
+    "slug": "fanaticsinc",
+    "sports": true
+  },
+  {
+    "name": "Fanatics Betting & Gaming",
+    "provider": "greenhouse",
+    "slug": "fanaticsfbg",
+    "sports": true
+  },
+  {
+    "name": "Genius Sports",
+    "provider": "greenhouse",
+    "slug": "geniussports",
+    "sports": true
+  },
+  {
+    "name": "Hudl",
+    "provider": "greenhouse",
+    "slug": "hudl",
+    "sports": true
+  },
+  {
+    "name": "Sportradar",
+    "provider": "smartrecruiters",
+    "slug": "Sportradar",
+    "sports": true
+  },
+  {
+    "name": "DubClub",
+    "provider": "ashby",
+    "slug": "dubclub",
+    "sports": true
+  },
+  {
+    "name": "SeatGeek",
+    "provider": "greenhouse",
+    "slug": "seatgeek",
+    "sports": true
+  },
+  {
+    "name": "Fubo",
+    "provider": "greenhouse",
+    "slug": "fubo",
+    "sports": true
+  },
+  {
+    "name": "DraftKings",
+    "provider": "greenhouse",
+    "slug": "draftkings",
+    "sports": true
+  },
+  {
+    "name": "PrizePicks",
+    "provider": "greenhouse",
+    "slug": "prizepicks",
+    "sports": true
+  },
+  {
+    "name": "Underdog",
+    "provider": "ashby",
+    "slug": "underdog",
+    "sports": true
+  },
+  {
+    "name": "SwingVision",
+    "provider": "ashby",
+    "slug": "swingvision",
+    "sports": true
+  },
+  {
+    "name": "Trackman",
+    "provider": "greenhouse",
+    "slug": "trackman",
+    "sports": true
+  },
+  {
+    "name": "WHOOP",
+    "provider": "greenhouse",
+    "slug": "whoop",
+    "sports": true
+  },
+  {
+    "name": "Zip",
+    "provider": "ashby",
+    "slug": "zip",
+    "sports": false
+  }
+]

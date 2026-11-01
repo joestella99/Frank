@@ -1,0 +1,34 @@
+name: Frank hunts for jobs
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: frank-hunt
+  cancel-in-progress: false
+jobs:
+  hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check scoring tests
+        run: python -m unittest discover -s tests -v
+      - name: Hunt for roles
+        env:
+          FRANK_DISCORD_WEBHOOK: ${{ secrets.FRANK_DISCORD_WEBHOOK }}
+        run: python cloud_hunt.py
+      - name: Save findings
+        run: |
+          git config user.name "frank-job-dog[bot]"
+          git config user.email "frank-job-dog[bot]@users.noreply.github.com"
+          git add data/jobs.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Frank fetched opportunities"
+            git push
+          fi
