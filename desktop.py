@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.request import Request,urlopen
 from tkinter import ttk
 from PIL import Image,ImageOps,ImageTk
+from sound import generate_bark
 
 BASE=Path(__file__).resolve().parent
 HOME=Path.home()/".frank"
@@ -40,6 +41,8 @@ class Pet:
         self.bubble=None
         self.drag=None
         self.sound=True
+        try:self.bark_file=generate_bark(HOME/"bark.wav")
+        except Exception:self.bark_file=None
         self.running=True
         self.direction=-1
         self.tick=0
@@ -171,7 +174,7 @@ class Pet:
             if sys.platform=="win32":
                 try:
                     import winsound
-                    winsound.PlaySound("SystemExclamation",winsound.SND_ALIAS|winsound.SND_ASYNC)
+                    winsound.PlaySound(str(self.bark_file),winsound.SND_FILENAME|winsound.SND_ASYNC) if self.bark_file else winsound.MessageBeep()
                 except Exception:pass
             else:self.root.bell()
 
