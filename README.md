@@ -2,22 +2,20 @@
 
 Frank is a tiny black Labrador / long-haired German Shepherd mix who wanders around your Windows desktop and fetches promising job opportunities. **Frank does not stop hunting when your laptop closes.**
 
-## Frank's movement (updated November 2026)
+## Frank's look and movement
 
-Frank is now a **90 × 98 pixel** transparent, always-on-top Windows companion.
-His appearance uses the original black Labrador / long-haired Shepherd illustration.
-The motion engine runs in `pet_motion.py` and randomly alternates between
-breathing/resting, watching, sniffing, short strolls, quicker trots, and naps.
-He also blinks and reacts when he fetches a new job.
+Frank uses an actual **5-pose illustrated sprite atlas** (sitting, standing/walking,
+sniffing, resting and sleeping), with a separate fetch-a-job animation.
+He stays tiny on the Windows desktop in a 90 x 98 pixel transparent overlay.
+Unlike the first prototype, he **does not bounce a sitting picture across the screen**.
 
-Right-click Frank to pause roaming or mute his bark. Drag him to reposition him.
-Double-click to open the saved-job dashboard.
+He stops between short walks, sniffs around, settles down, and perks up to carry
+a paper when a new job arrives. Click-and-drag Frank to reposition him, right
+click to pause roaming or mute his bark, and double click for the job stash.
 
-The animation is procedural motion built from one portrait illustration—not a
-full skeletal rig or hand-drawn walking sprite sheet, so his legs are **not yet
-independently animated**. For anatomically convincing walking, the next step
-is to provide side-view standing/walking poses while keeping this original
-portrait for sitting and alert reactions.
+The artwork is still an early sprite prototype: the two-step gait is not a
+fully hand-drawn leg-by-leg animation and needs polish on a real Windows display.
+The cloud job hunter continues to work independently of the desktop companion.
 
 ## Architecture
 
