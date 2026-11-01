@@ -16,7 +16,7 @@ GOLD="#ffcb78"
 
 def load_state():
     try:return json.loads(STATE.read_text(encoding="utf-8"))
-    except (OSError,ValueError):return {"seen":[],"statuses":{}}
+    except (OSError,ValueError):return {"seen":[],"statuses":{},"saved_jobs":{}}
 
 def save_state(state):
     STATE.write_text(json.dumps(state,indent=2),encoding="utf-8")
@@ -35,6 +35,9 @@ class Pet:
         try:self.root.wm_attributes("-transparentcolor",COLOR)
         except tk.TclError:pass
         self.state=load_state()
+        self.state.setdefault("seen",[])
+        self.state.setdefault("statuses",{})
+        self.state.setdefault("saved_jobs",{})
         self.jobs=[]
         self.messages=queue.Queue()
         self.dashboard=None
@@ -193,8 +196,11 @@ class Pet:
             while True:
                 tag,value=self.messages.get_nowait()
                 if tag=="jobs":
-                    self.jobs=[j for j in value if j.get("active",True)]
-                    new=[j for j in self.jobs if j["id"] not in self.state["seen"]]
+                    live=[j for j in value if j.get("active",True)]
+                    # Your starred applications remain in the local stash even if removed from the public feed.
+                    archived=[j for jid,j in self.state["saved_jobs"].items() if jid not in {x["id"] for x in live}]
+                    self.jobs=live+archived
+                    new=[j for j in live if j["id"] not in self.state["seen"]]
                     self.state["seen"]=list(set(self.state["seen"]) | {j["id"] for j in self.jobs})
                     save_state(self.state)
                     if new:
@@ -243,6 +249,10 @@ class Pet:
         j=self.selected()
         if j:
             self.state["statuses"][j["id"]]=status
+            if status in ("saved","applied"):
+                self.state["saved_jobs"][j["id"]]=j
+            else:
+                self.state["saved_jobs"].pop(j["id"],None)
             save_state(self.state)
             self.refresh()
 
