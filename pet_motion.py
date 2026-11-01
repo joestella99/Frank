@@ -164,6 +164,13 @@ class MotionController:
         page = Image.new("RGBA", CANVAS)
         x = (self.width - animal.width) // 2 + round(dx)
         y = self.height - animal.height - 8 - round(lift)
+        # The shadow belongs behind Frank's paws, never on top of him.
+        shadow = Image.new("RGBA", (self.width, 14))
+        d = ImageDraw.Draw(shadow)
+        radius = 15 + shadow_w
+        d.ellipse(((self.width - radius)//2, 4, (self.width + radius)//2, 11), fill=(0, 0, 0, 74))
+        shadow = shadow.filter(ImageFilter.GaussianBlur(3.5))
+        page.alpha_composite(shadow, (0, self.height - 14))
         page.alpha_composite(animal, (x, y))
 
         # Tiny non-invasive blink: alpha-tinted eyelid line over portrait eyes.
@@ -174,14 +181,6 @@ class MotionController:
             face_x = x + int(animal.width * 0.56)
             pen.line((face_x - 6, eye_y, face_x - 2, eye_y + 1), fill=(31, 25, 24, 220), width=2)
             pen.line((face_x + 4, eye_y, face_x + 8, eye_y + 1), fill=(31, 25, 24, 220), width=2)
-
-        # Faint shadow grounds the pet and grows as he settles into a step.
-        shadow = Image.new("RGBA", (self.width, 14))
-        d = ImageDraw.Draw(shadow)
-        radius = 15 + shadow_w
-        d.ellipse(((self.width - radius)//2, 4, (self.width + radius)//2, 11), fill=(0, 0, 0, 74))
-        shadow = shadow.filter(ImageFilter.GaussianBlur(3.5))
-        page.alpha_composite(shadow, (0, self.height - 12))
 
         # Preserve window chromakey for transparent Windows desktop pet.
         canvas = Image.new("RGB", CANVAS, self.background)
