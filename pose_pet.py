@@ -148,5 +148,8 @@ class PosePet:
         page.alpha_composite(pose, ((self.width - pose.width) // 2, 2))
         # Transparent-color key matches the existing Tkinter desktop window.
         background = Image.new("RGB", WINDOW, (254, 0, 254))
-        background.paste(page, (0, 0), page)
+        # Windows transparent-color windows are binary, not per-pixel-alpha.
+        # Threshold the mask instead of blending pink into translucent fur.
+        cutout = page.getchannel("A").point(lambda alpha: 255 if alpha > 112 else 0)
+        background.paste(page.convert("RGB"), (0, 0), cutout)
         return background
