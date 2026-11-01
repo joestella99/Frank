@@ -5,6 +5,7 @@ from urllib.request import Request,urlopen
 from tkinter import ttk
 from PIL import Image,ImageOps,ImageTk
 from sound import generate_bark
+from pet_motion import MotionController, FRAME_MS
 
 BASE=Path(__file__).resolve().parent
 HOME=Path.home()/".frank"
@@ -50,10 +51,11 @@ class Pet:
         self.direction=-1
         self.tick=0
         self.sprite=self.make_sprite()
-        self.images=self.frames()
-        self.label=tk.Label(self.root,image=self.images[0],bg=COLOR,borderwidth=0,cursor="hand2")
+        self.motion=MotionController(self.sprite)
+        self.current_image=ImageTk.PhotoImage(self.motion.frame())
+        self.label=tk.Label(self.root,image=self.current_image,bg=COLOR,borderwidth=0,cursor="hand2")
         self.label.pack()
-        self.width,self.height=self.images[0].width(),self.images[0].height()
+        self.width,self.height=self.motion.width,self.motion.height
         screen_w,screen_h=self.root.winfo_screenwidth(),self.root.winfo_screenheight()
         self.x=max(0,screen_w-self.width-38)
         self.floor=screen_h-self.height-75
@@ -94,20 +96,8 @@ class Pet:
             d.ellipse((59,85,74,97),fill="black")
         bounds=im.getbbox()
         if bounds:im=im.crop(bounds)
-        im.thumbnail((105,145),Image.Resampling.LANCZOS)
+        im.thumbnail((61,79),Image.Resampling.LANCZOS)
         return im
-
-    def frames(self):
-        frames=[]
-        for reverse in (False,True):
-            for offset in (0,2,0,-2):
-                raw=ImageOps.mirror(self.sprite) if reverse else self.sprite
-                page=Image.new("RGBA",(120,158),(0,0,0,0))
-                page.alpha_composite(raw,((120-raw.width)//2,158-raw.height-offset))
-                canvas=Image.new("RGB",page.size,COLOR)
-                canvas.paste(page,(0,0),page)
-                frames.append(ImageTk.PhotoImage(canvas))
-        return frames
 
     def place(self):
         self.root.geometry("+%d+%d"%(int(self.x),int(self.y)))
@@ -124,6 +114,7 @@ class Pet:
             a,b,_,_=self.drag
             if abs(a-e.x_root)+abs(b-e.y_root)<5:self.say("Woof! Double-click for my job stash.")
             self.drag=None
+            self.floor=min(self.root.winfo_screenheight()-self.height,max(0,self.y))
 
     def menu(self,e):
         try:self.menu_ui.tk_popup(e.x_root,e.y_root)
@@ -131,26 +122,20 @@ class Pet:
 
     def toggle_walk(self):
         self.running=not self.running
+        self.motion.walking_enabled=self.running
     def toggle_sound(self):
         self.sound=not self.sound
 
     def animate(self):
-        self.tick+=1
-        if self.running and self.drag is None:
-            # Mostly rest, with short walks along the lower edge of the display.
-            phase=self.tick%230
-            walking=40<=phase<145
-            if walking:
-                self.x+=self.direction*2
-                if self.x<=0 or self.x>=self.root.winfo_screenwidth()-self.width:
-                    self.direction*=-1
-                    self.x=max(0,min(self.x,self.root.winfo_screenwidth()-self.width))
-            self.y=self.floor-(abs((self.tick%6)-3) if walking else 0)
-            self.place()
-        frame=(self.tick//2)%4
-        if self.direction>0:frame+=4
-        self.label.configure(image=self.images[frame])
-        self.root.after(100,self.animate)
+        # Frame-by-frame motion, never a pre-baked left/right slide.
+        if self.drag is None:
+            self.x=self.motion.step(self.x,self.root.winfo_screenwidth()-self.width)
+            self.direction=self.motion.direction
+            self.y=self.floor
+        self.current_image=ImageTk.PhotoImage(self.motion.frame())
+        self.label.configure(image=self.current_image)
+        self.place()
+        self.root.after(FRAME_MS,self.animate)
 
     def say(self,msg):
         if self.bubble:
@@ -205,6 +190,7 @@ class Pet:
                     save_state(self.state)
                     if new:
                         top=max(new,key=lambda j:j.get("score",0))
+                        self.motion.found_job()
                         self.bark()
                         self.say("I fetched %d new match%s! %s at %s"%(len(new),"es" if len(new)!=1 else "",top["title"],top["company"]))
                     if self.dashboard and self.dashboard.winfo_exists():self.refresh()
