@@ -6,7 +6,7 @@ Frank is a tiny black Labrador / long-haired German Shepherd mix who wanders aro
 
 - **Cloud hunter:** GitHub Actions wakes up every 30 minutes (best effort), checks public employer job feeds, scores openings for NYC / US-remote software engineering, technical product, automation and sports-tech, and saves deduplicated matches in `data/jobs.json`.
 - **Desktop companion:** small transparent, always-on-top animated Frank walks around the screen, periodically syncs the saved job feed, barks for genuinely new matches, and opens your personal job stash.
-- **Stash:** local SQLite tracks your saved, applied, and ignored statuses. Only public job postings go into the GitHub-hosted JSON feed.
+- **Stash:** a local JSON file tracks your saved, applied, and ignored statuses. Only public job postings go into the GitHub-hosted JSON feed.
 - **Optional remote notifications:** a Discord webhook secret can send fresh strong matches to your phone even when the laptop is off.
 
 ## Get started
@@ -20,7 +20,7 @@ Frank is a tiny black Labrador / long-haired German Shepherd mix who wanders aro
 
 ## Customize Frank
 
-Edit `boards.json` to add public ATS job boards. Supported `provider` values: `greenhouse`, `lever`, and `ashby`. Frank only scans published openings; no scraping of LinkedIn pages and no automatic applications.
+Edit `boards.json` to add public ATS job boards. Supported `provider` values: `greenhouse`, `lever`, `ashby`, and `smartrecruiters`. Frank only scans published openings; no scraping of LinkedIn pages and no automatic applications.
 
 Frank defaults to NYC / NYC hybrid and potentially eligible US-remote jobs. Remote eligibility is not guaranteed: always verify the role on the original employer page. Initial sources are a starter list, not exhaustive job-market coverage; some may move or become unavailable.
 
