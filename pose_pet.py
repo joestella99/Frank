@@ -8,11 +8,11 @@ from io import BytesIO
 from pathlib import Path
 import random
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageDraw
 
 FRAME_MS = 110
 TILE = (88, 92)
-ORDER = ("idle", "walk1", "walk2", "sniff", "alert", "rest", "sleep", "carry")
+ORDER = ("idle", "walk1", "sniff", "rest", "sleep")
 WINDOW = (90, 98)
 
 
@@ -32,6 +32,22 @@ class PosePet:
             state: sheet.crop((i * TILE[0], 0, (i + 1) * TILE[0], TILE[1]))
             for i, state in enumerate(ORDER)
         }
+        # A second genuine stepping pose is derived from the standing artwork,
+        # not the old seated portrait.
+        first = self.poses["walk1"]
+        other = Image.new("RGBA", first.size)
+        for row in range(first.height):
+            offset = 3 if row > first.height * 0.77 else 0
+            strip = first.crop((0, row, first.width, row + 1))
+            other.alpha_composite(strip, (offset, row))
+        self.poses["walk2"] = other
+        self.poses["alert"] = self.poses["idle"]
+        carry = self.poses["walk1"].copy()
+        brush = ImageDraw.Draw(carry)
+        brush.polygon([(69, 51), (82, 48), (83, 61), (70, 63)],
+                      fill=(248, 237, 210, 255), outline=(144, 116, 79, 255))
+        brush.ellipse((76, 55, 79, 58), fill=(71, 54, 38, 255))
+        self.poses["carry"] = carry
         self.random = random.Random(seed)
         self.width, self.height = WINDOW
         self.direction = -1
