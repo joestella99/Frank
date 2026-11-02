@@ -2,6 +2,21 @@
   "version": 1,
   "jobs": [
     {
+      "id": "gh:fanaticsfbg:4406606009",
+      "company": "Fanatics Betting & Gaming",
+      "title": "Senior Software Engineer, Accounts - Core",
+      "location": "New York, NY, United States",
+      "url": "https://job-boards.greenhouse.io/fanaticsfbg/jobs/4406606009",
+      "posted_at": "2026-11-02T09:53:42-05:00",
+      "sports": true,
+      "source": "greenhouse",
+      "board": "greenhouse:fanaticsfbg",
+      "score": 82,
+      "why": "Software engineering · NYC · Sports technology · Skills: api",
+      "first_seen": "2026-11-02T15:17:17+00:00",
+      "active": true
+    },
+    {
       "id": "ashby:novig:ff741902-a4e7-4d91-8d1d-e6d7af599043",
       "company": "Novig",
       "title": "Software Engineer",
