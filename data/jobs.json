@@ -2,6 +2,21 @@
   "version": 1,
   "jobs": [
     {
+      "id": "smart:Sportradar:744000159687639",
+      "company": "Sportradar",
+      "title": "Senior Product Manager – Prediction Markets & US Sports Data",
+      "location": "New York, us",
+      "url": "https://jobs.smartrecruiters.com/Sportradar/744000159687639",
+      "posted_at": "2026-11-04T16:58:56.034Z",
+      "sports": true,
+      "source": "smartrecruiters",
+      "board": "smartrecruiters:Sportradar",
+      "score": 81,
+      "why": "Product · NYC · Sports technology",
+      "first_seen": "2026-11-04T17:13:18+00:00",
+      "active": true
+    },
+    {
       "id": "gh:fanaticsfbg:4406606009",
       "company": "Fanatics Betting & Gaming",
       "title": "Senior Software Engineer, Accounts - Core",
