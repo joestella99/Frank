@@ -2,6 +2,21 @@
   "version": 1,
   "jobs": [
     {
+      "id": "gh:fanaticsfbg:4423945009",
+      "company": "Fanatics Betting & Gaming",
+      "title": "Senior Java Software Engineer (Remote) ",
+      "location": "New York, NY, United States",
+      "url": "https://job-boards.greenhouse.io/fanaticsfbg/jobs/4423945009",
+      "posted_at": "2026-09-29T09:39:42-04:00",
+      "sports": true,
+      "source": "greenhouse",
+      "board": "greenhouse:fanaticsfbg",
+      "score": 88,
+      "why": "Software engineering · NYC · Sports technology · Skills: automation, javascript, api",
+      "first_seen": "2026-11-05T00:35:50+00:00",
+      "active": true
+    },
+    {
       "id": "smart:Sportradar:744000159687639",
       "company": "Sportradar",
       "title": "Senior Product Manager – Prediction Markets & US Sports Data",
